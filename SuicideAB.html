@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500|Jura" rel="stylesheet">
+<title>TownHall Suicide Article</title>
+
+<style type="text/css">
+
+  body{
+      font-family: 'Alegreya Sans SC', sans-serif;
+      margin: 0;
+  }
+
+  p{
+	  font-size:20px;
+      font-family: 'Jura', sans-serif;
+  }
+  h3{
+      text-decoration: underline;
+      font-size: 40px;
+      color: gray;
+  }
+  input[type=text] {
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+  }
+
+  ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0,0.2);
+      position: fixed;
+      width: 100%;
+  }
+
+  li {
+      float: left;
+  }
+
+  li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+  }
+
+  li a:hover:not(.active) {
+      background-color: #111;
+  }
+
+  .container{
+	display:flex;
+  }
+  
+  .box1,.box2{
+    margin: 20px;
+  }
+  
+  .box1{
+    margin-left: 30px;
+    flex: 2;
+  }
+
+  .box2{
+    margin-right: 50px;
+    margin-left: 40px;
+    flex:1;
+    font-size: 30px;
+  }
+
+  #comment1{
+    text-align: center;
+    margin: 20px;
+    padding: 5px;
+  }
+
+  #title{
+    margin: 5px;
+    text-align: center;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+
+  #bodybox{
+    border: 2px solid rgba(0,0,0,0.3);
+    margin-left: 0%;
+    margin-right: 0%
+  }
+
+  #DisplayOne{
+    text-align: left;
+    overflow: auto;
+    height: 200px;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+  #name  {
+    font-weight: bold;
+  }
+
+  #comment{
+    text-align: center;
+  }
+
+  .btn{
+    margin: 0px;
+    border: 2px gray solid;
+    color:gray;
+  }
+  #btn{
+	text-align:center;
+  }
+  button{
+    background-color: rgba(0,0,0,0);
+	width:100px;
+	height:50px;
+    margin-left: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+  }
+  #mapContainer{
+    border:2px rgba(0,0,0,0.3) solid;
+    margin-top:40px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: -10px;
+    padding:0px;
+  }
+
+  #abuse,#bully,#sui,#obe,#dis{
+    border-bottom:  2px solid rgba(0, 0, 0, 0.3);
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+    padding: 20px;
+  }
+  #abuse:hover,#bully:hover,#sui:hover,#obe:hover,#dis:hover{
+      box-shadow: 4px 4px 3px lightblue;
+  }
+   footer{
+        background-color: lightgray;
+        text-align: center;
+        height: 5vh;
+        padding: 1vh;
+      }
+</style>
+<script>
+function map() {
+var mapProp= {
+    center:new google.maps.LatLng(32.0616667,118.7777778),
+    zoom:12,
+};
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmOVuFmQxGU0XKbW5YL4uF3AzpRyrESXI&callback=myMap"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD8efYCwM31avZxLnK0Qr0sS4Wpl2qFv08",
+    authDomain: "suicide-china.firebaseapp.com",
+    databaseURL: "https://suicide-china.firebaseio.com",
+    projectId: "suicide-china",
+    storageBucket: "suicide-china.appspot.com",
+    messagingSenderId: "188421250469"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database().ref();
+  var data;
+  database.child("dataTable").on('value', function(snapshot){
+    data = snapshot.val();
+  var build = "";
+    for(var key in data){
+      build += data[key].name + " : " + data[key].message + "<hr>";
+  }
+    document.getElementById("DisplayOne").innerHTML = build;
+  
+  })
+  
+
+function SubmitIdea(){
+  var u = document.getElementById("name").value;
+  var m = document.getElementById("message").value;
+  database.child("dataTable").push(
+      {
+       "name": u,
+     "message": m
+  
+      }
+  
+    );
+  }
+
+</script>
+
+</head>
+<body onload="map()">
+<!-- Navbar -->
+  <ul>
+    <li><a href="index.html">Town Hall</a></li>
+    <li style="float:right"><a class="active" href="about.html">About Us</a></li>
+    <li style="float:right"><a class="active" href="issues.html">Issues</a></li>
+    <li style="float:right"><a class="active" href="suggestion.html">Suggestions</a></li>
+  </ul>
+
+<br><br>
+<div class="container">
+    <div id="box1">
+      <h3 style="text-align: center;"> “The gate that leads to a never ending dream” </h3>
+	  <br>
+      <p id="btn"><a class="btn" role="button" data-toggle="modal" data-target="#myModal2">Video</a></p>
+		<br>
+
+      <p>
+        <img src="http://i.dailymail.co.uk/i/pix/2016/11/25/12/3AB2220B00000578-3968696-The_double_deck_rail_road_took_eight_years_and_280_million_yuan_-a-35_1480077435288.jpg" style="float: right; height: 140px; width: 200px; margin:10px;">
+		
+        Suicide is the tenth most common cause of death in the United States. People may consider suicide when they are hopeless and can't see any other solution to their problems. Often it's related to serious depression, alcohol or substance abuse, or a major stressful event.
+		</p>
+<p>
+In the rapidly modernizing, constantly churning city of Nanjing, China, there is a legendary bridge, four miles long, where day after day, week after week, the desperate and melancholy and tormented come to end their lives. Most end up in the Yangtze River, 130 feet below. But some do not meet their maker. They meet someone else. They are pulled back from the brink—sometimes violently—by an odd and unlikely angel.
+</p>
+<p>
+Nanjing Bridge, China's most frequented suicide spot with pedestrian platforms situated 60 metres (197 feet) above the fast-flowing Yangtze River. 
+<img src="http://cf.mp-cdn.net/b6/41/1b2a9fb75ba9abb1ff11f20f5e0a-should-the-chinese-government-do-more-to-prevent-suicide-on-the-nanjing-yangtze-river-bridge.jpg" style="float: left; height: 130px; width: 130px; margin: 10px; margin-right:10px;">
+  Statistics showed that more than 2,000 people had committed suicide from the Nanjing Yangtze River Bridge between 1968 and 2006, according to People's Daily Online.
+  </p>
+
+<br><hr>
+ <div id="comment1">
+    <div id="bodybox">
+      <div id="title" style="font-size:25px;">Comments</div>
+      <div id="DisplayOne"></div>
+        <div id="commentBar">
+        <Input id="name" type="text" placeholder="User Name"></Input>
+          <Input id="message" type="text"></Input>
+          <button onclick="SubmitIdea()">Submit</button>
+        </div>
+    </div>
+    </div>
+    </div>
+
+	<div class="box2">
+		<h3>Related Websites</h3><br>
+		<div id="dis"><a href="">Discrimination</a><br></div><br>
+		<div id="sui"><a href="">Suicide</a><br></div><br>
+		<div id="bully"><a href="">Bullying</a><br></div><br>
+		<div id="abuse"><a href="">Animal Abuse</a><br></div><br>
+		<div id="obe"><a href="">Obesity</a></div>
+	  
+		<div id="mapContainer">
+			<div id="googleMap" style="width:100%;height:250px;"></div> 
+		</div>
+    </div>
+	
+    </div>
+	
+    <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Don't Jump! China's Suicide Bridge (Interview w/ Jordan Horowitz) | China Uncensored</h4>
+                        </div>
+                        <div class="modal-body">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/md74goBqnUs?ecver=2" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<footer>
+  <p>- Service Learning Project -</p>
+</footer>
+
+</body>
+</html>

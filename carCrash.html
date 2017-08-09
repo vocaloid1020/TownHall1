@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500|Jura" rel="stylesheet">
+
+<title>TownHall Car Crash Article</title>
+
+<style type="text/css">
+
+  body{
+      font-family: 'Alegreya Sans SC', sans-serif;
+      margin-bottom: 0;
+  }
+
+  p{
+	  font-size:20px;
+      font-family: 'Jura', sans-serif;
+  }
+  h3{
+      text-decoration: underline;
+      font-size: 40px;
+      color: gray;
+  }
+  input[type=text] {
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+  }
+
+  ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0,0.2);
+      position: fixed;
+      width: 100%;
+  }
+
+  li {
+      float: left;
+  }
+
+  li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+  }
+
+  li a:hover:not(.active) {
+      background-color: #111;
+  }
+
+  .container{
+	display:flex;
+  }
+  
+  .box1,.box2{
+    margin: 20px;
+  }
+  
+  .box1{
+    height: 86vh;
+    margin-left: 30px;
+    flex: 2;
+  }
+
+  .box2{
+    margin-right: 50px;
+    margin-left: 40px;
+    flex:1;
+    font-size: 30px;
+  }
+
+  #comment1{
+    text-align: center;
+    margin: 20px;
+    padding: 5px;
+  }
+
+  #title{
+    margin: 5px;
+    text-align: center;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+
+  #bodybox{
+    border: 2px solid rgba(0,0,0,0.3);
+    margin-left: 0%;
+    margin-right: 0%
+  }
+
+  #DisplayOne{
+    text-align: left;
+    overflow: auto;
+    height: 200px;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+  #name  {
+    font-weight: bold;
+  }
+
+  #comment{
+    text-align: center;
+  }
+
+  .btn{
+    margin: 0px;
+    border: 2px gray solid;
+    color:gray;
+  }
+  #btn{
+	text-align:center;
+  }
+  button{
+    background-color: rgba(0,0,0,0);
+	width:100px;
+	height:50px;
+    margin-left: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+  }
+  #mapContainer{
+    border:2px rgba(0,0,0,0.3) solid;
+    margin-top:40px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: -10px;
+    padding:0px;
+  }
+
+  #abuse,#bully,#sui,#obe,#dis{
+    border-bottom:  2px solid rgba(0, 0, 0, 0.3);
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+    padding: 20px;
+  }
+  #abuse:hover,#bully:hover,#sui:hover,#obe:hover,#dis:hover{
+      box-shadow: 4px 4px 3px lightblue;
+  }
+   footer{
+        background-color: lightgray;
+        text-align: center;
+        height: 5vh;
+        padding: 1vh;
+      }
+</style>
+<script>
+function map() {
+var mapProp= {
+    center:new google.maps.LatLng(26.091183, -97.165062),
+    zoom:12,
+};
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmOVuFmQxGU0XKbW5YL4uF3AzpRyrESXI&callback=myMap"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyACvx2xHWmquSVNCZfS2P7F2DcHJm0caSc",
+    authDomain: "car-crash-c5374.firebaseapp.com",
+    databaseURL: "https://car-crash-c5374.firebaseio.com",
+    projectId: "car-crash-c5374",
+    storageBucket: "car-crash-c5374.appspot.com",
+    messagingSenderId: "122933047291"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database().ref();
+  var data;
+  database.child("dataTable").on('value', function(snapshot){
+    data = snapshot.val();
+  var build = "";
+    for(var key in data){
+      build += data[key].name + " : " + data[key].message + "<hr>";
+  }
+    document.getElementById("DisplayOne").innerHTML = build;
+  
+  })
+  
+
+function SubmitIdea(){
+  var u = document.getElementById("name").value;
+  var m = document.getElementById("message").value;
+  database.child("dataTable").push(
+      {
+       "name": u,
+     "message": m
+  
+      }
+  
+    );
+  }
+
+</script>
+
+</head>
+<body onload="map()">
+<!-- Navbar -->
+  <ul>
+    <li><a href="index.html">Town Hall</a></li>
+    <li style="float:right"><a class="active" href="about.html">About Us</a></li>
+    <li style="float:right"><a class="active" href="issues.html">Issues</a></li>
+    <li style="float:right"><a class="active" href="suggestion.html">Suggestions</a></li>
+  </ul>
+
+  <br><br>
+
+<div class="container">
+	<div class="box1">
+		
+			<h3 style="text-align: center;"> “Fatal car crash due to distraction” </h3>
+			
+			<br>
+			<p id="btn"><a class="btn" role="button" data-toggle="modal" data-target="#myModal2">Video</a></p><br>
+
+			<p>
+			<img src="http://assets.nydailynews.com/polopoly_fs/1.2572369.1458592483!/img/httpImage/image.jpg_gen/derivatives/article_750/distracted22n-4-web.jpg" style="float: right; height: 150px; width: 200px; margin-right: 50px; margin-left:10px;">
+			Three Houston teens driving home from a spring break trip were killed Sunday in a distracted driving crash in South Texas, officials said,
+			The driver of their Hyundai Elantra veered off a highway while checking her phone’s GPS then steered right into an oncoming 18-wheeler as they drove back from South Padre Island.
+			</p>
+			<p>
+			Brianna Robinson, 19, her sister Jade Robinson, 17, and Brittanie Johnson, 18, died after the 2 p.m. collision near Corpus Christi on U.S. 77, and the fourth passenger, Shelby Coleman, 18, was critically injured but stable, according to the Texas Department of Public Safety.</p>
+			<p>
+			Distracted driving is the No. 1 killer of American teens, according to DPS, and the agency requires all teen driver’s license applicants to take a new course about the danger. 
+			</p>
+			<br><hr>
+			
+		
+		<div id="comment1">
+			<div id="bodybox">
+			    <div id="title" style="font-size:25px;">Comments</div>
+			    <div id="DisplayOne"></div>
+				<div id="commentBar">
+					<Input id="name" type="text" placeholder="User Name"></Input>
+					<Input id="message" type="text"></Input>
+					<button onclick="SubmitIdea()">Submit</button>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+ 
+	<div class="box2">
+		<h3>Related Websites</h3><br>
+		<div id="dis"><a href="">Discrimination</a><br></div><br>
+		<div id="sui"><a href="">Suicide</a><br></div><br>
+		<div id="bully"><a href="">Bullying</a><br></div><br>
+		<div id="abuse"><a href="">Animal Abuse</a><br></div><br>
+		<div id="obe"><a href="">Obesity</a></div>
+	  
+		<div id="mapContainer">
+			<div id="googleMap" style="width:100%;height:250px;"></div> 
+		</div>
+    </div>
+	
+</div>
+	
+	
+    <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Services Held For 1 of 3 Teens Killed In Christmas Eve Crash</h4>
+                        </div>
+                        <div class="modal-body">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/yyiiCGhUBzk" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+<footer>
+  <p>- Service Learning Project -</p>
+</footer>
+
+</body>
+</html>

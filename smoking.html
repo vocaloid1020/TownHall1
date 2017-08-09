@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500|Jura" rel="stylesheet">
+  
+<title>TownHall Smoking Article</title>
+
+<style type="text/css">
+
+  body{
+      font-family: 'Alegreya Sans SC', sans-serif;
+      margin-bottom: 0;
+  }
+
+  p{
+	  font-size:20px;
+      font-family: 'Jura', sans-serif;
+  }
+  h3{
+      text-decoration: underline;
+      font-size: 40px;
+      color: gray;
+  }
+  input[type=text] {
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+  }
+
+  ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0,0.2);
+      position: fixed;
+      width: 100%;
+  }
+
+  li {
+      float: left;
+  }
+
+  li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+  }
+
+  li a:hover:not(.active) {
+      background-color: #111;
+  }
+
+  .container{
+	display:flex;
+  }
+  
+  .box1,.box2{
+    margin: 20px;
+  }
+  
+  .box1{
+    height: 86vh;
+    margin-left: 30px;
+    flex: 2;
+  }
+
+  .box2{
+    margin-right: 50px;
+    margin-left: 40px;
+    flex:1;
+    font-size: 30px;
+  }
+
+  #comment1{
+    text-align: center;
+    margin: 20px;
+    padding: 5px;
+  }
+
+  #title{
+    margin: 5px;
+    text-align: center;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+
+  #bodybox{
+    border: 2px solid rgba(0,0,0,0.3);
+    margin-left: 0%;
+    margin-right: 0%
+  }
+
+  #DisplayOne{
+    text-align: left;
+    overflow: auto;
+    height: 200px;
+    border-bottom: 2px solid rgba(0,0,0,0.3);
+  }
+  #name  {
+    font-weight: bold;
+  }
+
+  #comment{
+    text-align: center;
+  }
+
+  .btn{
+    margin: 0px;
+    border: 2px gray solid;
+    color:gray;
+  }
+  #btn{
+	text-align:center;
+  }
+  button{
+    background-color: rgba(0,0,0,0);
+	width:100px;
+	height:50px;
+    margin-left: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+  }
+  #mapContainer{
+    border:2px rgba(0,0,0,0.3) solid;
+    margin-top:40px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: -10px;
+    padding:0px;
+  }
+
+  #abuse,#bully,#sui,#obe,#dis{
+    border-bottom:  2px solid rgba(0, 0, 0, 0.3);
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+    padding: 20px;
+  }
+  #abuse:hover,#bully:hover,#sui:hover,#obe:hover,#dis:hover{
+      box-shadow: 4px 4px 3px lightblue;
+  }
+
+</style>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmOVuFmQxGU0XKbW5YL4uF3AzpRyrESXI&callback=myMap"></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBbfXGbn9jiI9VTiLvlUfh8drs3plKne2U",
+    authDomain: "my-project-1486486065547.firebaseapp.com",
+    databaseURL: "https://my-project-1486486065547.firebaseio.com",
+    projectId: "my-project-1486486065547",
+    storageBucket: "",
+    messagingSenderId: "551281935199"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database().ref();
+  var data;
+  database.child("dataTable").on('value', function(snapshot){
+    data = snapshot.val();
+  var build = "";
+    for(var key in data){
+      build += data[key].name + " : " + data[key].message + "<hr>";
+  }
+    document.getElementById("DisplayOne").innerHTML = build;
+  
+  })
+  function SubmitIdea(){
+  var u = document.getElementById("name").value;
+  var m = document.getElementById("message").value;
+  database.child("dataTable").push(
+      {
+       "name": u,
+     "message": m
+  
+      }
+  )
+    ;
+  }
+
+</script>
+
+</head>
+<body onload="map()">
+<!-- Navbar -->
+
+
+  <ul>
+    <li><a href="index.html">Town Hall</a></li>
+    <li style="float:right"><a class="active" href="about.html">About Us</a></li>
+    <li style="float:right"><a class="active" href="issues.html">Issues</a></li>
+    <li style="float:right"><a class="active" href="suggestion.html">Suggestions</a></li>
+  </ul>
+<br><br>
+
+<div class="container">
+    <div class="box1">
+	
+      <h3 style="text-align: center;"> “Men, Women, and the Dangers of Smoking” </h3>
+	  <br>
+      <p id="btn"><a class="btn" role="button" data-toggle="modal" data-target="#myModal2">Video</a></p>
+	  <br>
+
+		<p>
+		<img src="http://media.beam.usnews.com/87/c3/ce03b885416194a375a141e070df/160513-teenssmoking-stock.jpg" style="float: right; height: 140px; width: 200px; margin-right: 20px; margin-top: 10px;">
+		Old Hollywood is replete with images of men who smoked cigarettes — from rough-and-tumble cowboys like John Wayne to debonaire leading men like Humphrey Bogart. And famous women were known for smoking, too: Many images of stars like Marlene Dietrich feature a glamorous woman elegantly posing with a cigarette in hand.
+		</p>
+		<p>
+		Smoking used to be considered more of a male pursuit, with much higher numbers of men smoking than women. Back in 1965, about 52 percent of men smoked, compared with 34 percent of women. Forty years later, 24 percent of men smoked compared with 18 percent of women. Though the overall percentage of people who smoke has come down, the smoking "gender gap" has narrowed over time, putting both sexes at more equal risk of the dangers of smoking.</p>
+		<p>
+		Overall, women may find it much harder to stop smoking than men do. Both genders cite health concerns regarding the dangers of smoking as the top reason for quitting smoking, but the U.S. Centers for Disease Control and Prevention found that while 29 percent of male smokers have been able to quit, only 19 percent of female smokers have permanently broken the habit. Women are three times more likely than men to relapse while trying to quit smoking without any help. 
+		<img src="http://www.2pointcontact.com/wp-content/uploads/2015/07/Effects-of-Sheesha-or-Hookah.jpg" style="float: left; height: 160px; width: 220px; margin-right: 20px; margin-top: 20px;"></p>
+		<p>
+		Researchers have found a number of reasons why it’s harder for women to stop smoking. Women tend to suffer withdrawal more intensely than men, especially during the last two weeks of their menstrual cycles.
+		</p>
+
+<br><hr>
+
+ <div id="comment1">
+    <div id="bodybox">
+      <div id="title" style="font-size:25px;">Comments</div>
+      <div id="DisplayOne"></div>
+        <div id="commentBar">
+        <Input id="name" type="text" placeholder="User Name"></Input>
+          <Input id="message" type="text"></Input>
+          <button onclick="SubmitIdea()">Submit</button>
+        </div>
+    </div>
+    </div>
+	</div>
+    
+
+
+	<div class="box2">
+		<h3>Related Websites</h3><br>
+		<div id="dis"><a href="">Discrimination</a><br></div><br>
+		<div id="sui"><a href="">Suicide</a><br></div><br>
+		<div id="bully"><a href="">Bullying</a><br></div><br>
+		<div id="abuse"><a href="">Animal Abuse</a><br></div><br>
+		<div id="obe"><a href="">Obesity</a></div>
+	  
+    </div>
+  </div>
+
+
+    <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Don't Jump! China's Suicide Bridge (Interview w/ Jordan Horowitz) | China Uncensored</h4>
+                        </div>
+                        <div class="modal-body">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/oW45KJMuEhI" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500|Jura" rel="stylesheet">
+
+<title>TOWN HALL SUGGESTIONS</title>
+
+<style type="text/css">
+
+  body{
+    font-family: 'Alegreya Sans SC', sans-serif;
+    margin-bottom: 0;
+  }
+
+  p{
+    font-family: 'Jura', sans-serif;
+  }
+
+  .input[type=text] {
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    color:black;
+  }
+
+  .input[type=text]:focus {
+    width: 500px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0,0.2);
+    position: fixed;
+    width: 100%;
+  }
+  li {
+    float: left;
+  }
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  li a:hover:not(.active) {
+    background-color: #111;
+  }
+  .boxbox{
+    background-color: rgba(0,0,0,0);
+    padding-right: 8px;
+    padding-left: 8px;
+    border: 1px solid white;
+    font-size: 25px;
+  }
+  .jumbotron{
+    background: url("https://static.pexels.com/photos/230872/pexels-photo-230872.jpeg") 100% fixed;
+    background-size: cover;
+    background-position: center;
+    height: 70vh;
+  }
+  #container{
+    margin-top: 15vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  #comment{
+    text-align: center;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  }
+  #submit{
+    display: flex;
+    flex-direction: row-reverse;
+
+  }
+  #submit button{
+    background-color: rgba(0,0,0,0);
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-left: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 15px;
+  }
+  .container2{
+    text-align: center;
+    display:flex;
+    justify-content: space-around;
+    margin: 20px;
+    padding: 10px;
+  }
+
+  .box1,.box2{
+    margin: 20px;
+  }
+
+  .box1{
+    height: 62vh;
+    margin-left: 30px;
+    flex: 2;
+  }
+  #comment1{
+    background-color: white;
+    height: 62vh;
+  }
+  .box2{
+    margin-right: 50px;
+    margin-left: 40px;
+    flex:1;
+    font-size: 30px;
+  }
+  #title{
+    text-align: left;
+  }
+  #bodybox{
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    margin-left: 20%;
+    margin-right: 20%
+  }
+  #DisplayOne{
+    text-align: left;
+    overflow: auto;
+    height: 62vh;
+    font-size: 20px;
+    border-bottom:  2px solid rgba(0, 0, 0, 0.3);
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+  }
+  h3{
+      text-decoration: underline;
+      font-size: 40px;
+      color: gray;
+  }
+  .modal-body p{
+    font-family: cambria;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #iss{
+    padding-left: 150px;
+    margin-left: 100px;
+    margin-top: 10px;
+    height:150px;
+    width:350px;
+  }
+  #xcoord{
+    width:150px;
+    margin-bottom: 18px;
+    margin-left: 120px;
+  }
+  #ycoord{
+    width:150px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+  }
+
+  .modal-title{
+    text-align: center;
+    font-family: alegreya;
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  #abuse,#bully,#sui,#obe,#dis{
+    border-bottom:  2px solid rgba(0, 0, 0, 0.3);
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    transform: 3s;
+  }
+  footer{
+        background-color: lightgray;
+        text-align: center;
+        height: 5vh;
+        padding: 1vh;
+      }
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+
+<script>
+  // Initialize Firebase
+   var config = {
+    apiKey: "AIzaSyClcMjqoKZJRz5HWHNN_sVJaoeZvdLfcTY",
+    authDomain: "town-hall-bffdd.firebaseapp.com",
+    databaseURL: "https://town-hall-bffdd.firebaseio.com",
+    projectId: "town-hall-bffdd",
+    storageBucket: "town-hall-bffdd.appspot.com",
+    messagingSenderId: "128591849152"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database().ref();
+  var data;
+  database.child("dataTable").on('value', function(snapshot){
+    data = snapshot.val();
+	var build = "";
+    for(var key in data){
+	    build += data[key].name + " : " + data[key].message + "<hr>";
+	}
+    document.getElementById("DisplayOne").innerHTML = build;
+  
+  })
+  
+
+function SubmitIdea(){
+  var u = document.getElementById("name").value;
+  var m = document.getElementById("message").value;
+  database.child("dataTable").push(
+      {
+       "name": u,
+	   "message": m
+  
+      }
+  
+    );
+  }
+
+</script>
+
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+  <ul>
+    <li><a href="index.html">Town Hall</a></li>
+    <li style="float:right"><a class="active" href="about.html">About Us</a></li>
+    <li style="float:right"><a class="active" href="issues.html">Issues</a></li>
+    <li style="float:right"><a class="active" href="suggestion.html">Suggestions</a></li>
+  </ul>
+
+<!-- Jumbotron -->
+
+<div class="jumbotron">
+  <div id="container">
+    <h1>Suggestion</h1><br>      
+      <form>
+        <input class="input" type="text" name="search" placeholder="Looking for something?">
+      </form><br>
+    <button class="boxbox">Search</button>
+  </div>    
+</div>
+<br>
+<div id="comment">
+  <h3>Your Comment</h3><hr>
+  <div id="commentHeading">
+  	<div id="bodybox">
+  		<div id="title">
+  		<Input id="name" type="text" style="width: 100%" placeholder="User Name">
+  		</div>
+  			<div id="commentBar">
+   	 			<Input id="message" type="text" style="height: 100px; width: 100%">
+    			
+  			</div>
+        <div id="submit">
+          <button onclick="SubmitIdea()" style="">Submit</button>
+          <button type="button"  data-toggle="modal" data-target="#myModal">Info</button>
+          
+        </div>
+		</div>
+	</div><br><br><br>
+</div>
+
+
+<div class="container2">
+
+  <div class="box1">
+    <h3>Others' Comments</h3><br><br>
+    <div id="comment1">
+      <p>
+         <div id="DisplayOne"></div>
+      </p>
+    </div>
+
+  
+  </div>
+
+  <div class="box2">
+    <h3>Related Websites</h3><br>
+	  <div id="dis"><a href="">Discrimination</a><br></div><br>
+      <div id="sui"><a href="">Suicide</a><br></div><br>
+      <div id="bully"><a href="">Bullying</a><br></div><br>
+      <div id="abuse"><a href="">Animal Abuse</a><br></div><br>
+      <div id="obe"><a href="">Obesity</a></div>
+  </div>
+
+</div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Information</h4>
+        </div>
+        <div class="modal-body">
+
+        <p>Google Coordinates</p>
+       <Input id="xcoord" type="text" placeholder="x-coord"><Input id="ycoord" type="text" placeholder="y-coord"><br>
+       <p>Issue</p>
+       <Input id="iss" type="text" placeholder="Issue">
+
+        </div>
+        <div class="modal-footer">
+          <button onclick="()" class="btn btn-default">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+<footer>
+  <p>- Service Learning Project -</p>
+</footer>
+
+
+</body>
+</html>
